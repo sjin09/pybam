@@ -17,11 +17,9 @@ def return_gzip_fastq(infile, outfile):
     alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
     for line in alignment_file:
         read = BAM(line)
-        fqfile.write(
-            "@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii).encode(
-                "utf-8"
-            )
-        )
+        fqstr = "@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii)
+        fqstr = fqstr.encode("utf-8")
+        fqfile.write(fqstr)
 
 
 def bam2fastq(infile, outfile):
