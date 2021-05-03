@@ -1,4 +1,5 @@
-# class
+import pysam
+
 class BAM:
     def __init__(self, line):
         # target
