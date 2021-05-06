@@ -43,7 +43,7 @@ def parse_args(program_version, arguments=sys.argv[1:]):
     # subcommands: zmwstat
     parser_head = subparsers.add_parser(
         "zmwstat",
-        help="",
+        help="returns ZMW productivity statistics from CCS and subread BAM files",
     )
     parser_head.add_argument(
         "--ccs",
