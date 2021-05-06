@@ -1,5 +1,5 @@
-from os import kill
 import sys
+import json
 import pysam
 import logging
 import natsort
@@ -68,6 +68,7 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
 def zmwstat(ccs, subreads, outfile):
     if ccs.endswith(".bam") and subreads.endswith(".bam"):
         ccs_hsh = ccs_stat(ccs)
+        print(json.dumps(ccs_hsh, indent=4))
         # subread_hsh = subread_stat(subreads)
         # return_stat(ccs_hsh, subread_hsh, outfile)
     else:
