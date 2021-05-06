@@ -20,7 +20,7 @@ def main():
     elif options.sub == "zmwlist":  # parse BAM or FASTQ file and return a list of ZMW
         zmwlist(options.input, options.output)
     elif options.sub == "zmwstat":  # generate ZMW statistisc from CCS and subreads BAM files
-        zmwlist(options.ccs, options.subreads, options.output)
+        zmwstat(options.ccs, options.subreads, options.output)
     else:
         logging.warning("The subcommand does not exist!\n")
         parser.print_help()
