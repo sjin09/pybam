@@ -9,11 +9,11 @@ from pybam.bamClass import BAM
 
 def ccs_stat(ccs):
     ccs_hsh = {}
-    alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
+    alignment_file = pysam.AlignmentFile(ccs, "rb", check_sq=False)
     for line in alignment_file:
         read = BAM(line)
         hq_base_count = read.bq_ascii.count("~")
-        hq_base_fraction = "{:.2f}".format(hq_base_count/float(qlen))
+        hq_base_fraction = "{:.2f}".format(hq_base_count/float(read.qlen))
         ccs_hsh[read.zmw] = [hq_base_fraction, read.len]
     return ccs_hsh
 
