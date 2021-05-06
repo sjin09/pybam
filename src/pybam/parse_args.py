@@ -60,7 +60,28 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         help="FILE to return the ZMW and comma separated subread lengths",
     )
 
-    if len(arguments) == 0:
+    # subcommands: zmwlist
+    parser_head = subparsers.add_parser(
+        "zmwlist",
+        help="returns zmwlist from BAM or FASTQ files",
+    )
+    parser_head.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        required=True,
+        help="SAM/BAM or FASTQ file",
+    )
+    parser_head.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        required=True,
+        help="FILE to return list of zmws",
+    )
+
+
+    if len(arguments) == 0: # option length
         parser.print_help()
         parser.exit()
     else:
