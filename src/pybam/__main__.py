@@ -8,6 +8,7 @@ import os
 import sys
 import logging
 from pybam.fastq import bam2fastq
+from pybam.zmwlist import zmwlist
 from pybam.parse_args import parse_args
 
 def main():
@@ -16,7 +17,7 @@ def main():
     if options.sub == "bam2fastq":  # return first n lines of sequences
         bam2fastq(options.input, options.output)
     elif options.sub == "zmwlist":  # return first n lines of sequences
-        bam2fastq(options.input, options.output)
+        zmwlist(options.input, options.output)
 
     # elif options.sub == "filter": ## return first n lines of sequences
     #     hard_filter(options.input, options.number, options.output)

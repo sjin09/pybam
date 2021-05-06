@@ -29,6 +29,6 @@ def bam2fastq(infile, outfile):
         elif outfile.endswith((".fq.gz", ".fastq.gz")):
             return_gzip_fastq(infile, outfile)
         else:
-            logging.error("pybam does not support the provided INPUT file")
+            logging.error("bam2fastq does not support the provided OUTPUT file format")
     else:
-        logging.error("pybam does not support the provided INPUT file")
+        logging.error("bam2fastq does not support the provided INPUT file")
