@@ -40,24 +40,29 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         help=".fq, .fq.gz, .fastq or .fastq.gz file",
     )
 
-    # subcommands: subread_lengths
+    # subcommands: zmwstat
     parser_head = subparsers.add_parser(
-        "subread_lengths",
+        "zmwstat",
         help="",
     )
     parser_head.add_argument(
-        "-i",
-        "--input",
+        "--ccs",
         type=str,
         required=True,
-        help="SAM/BAM file",
+        help="PacBio circular consensus sequence (CCS) SAM/BAM file",
+    )
+    parser_head.add_argument(
+        "--subreads",
+        type=str,
+        required=True,
+        help="PacBio subreads SAM/BAM file",
     )
     parser_head.add_argument(
         "-o",
         "--output",
         required=True,
         type=argparse.FileType("w"),
-        help="FILE to return the ZMW and comma separated subread lengths",
+        help="FILE to return the ZMW sequence statistics",
     )
 
     # subcommands: zmwlist
