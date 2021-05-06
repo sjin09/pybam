@@ -15,6 +15,9 @@ def main():
 
     if options.sub == "bam2fastq":  # return first n lines of sequences
         bam2fastq(options.input, options.output)
+    elif options.sub == "zmwlist":  # return first n lines of sequences
+        bam2fastq(options.input, options.output)
+
     # elif options.sub == "filter": ## return first n lines of sequences
     #     hard_filter(options.input, options.number, options.output)
     # elif options.sub == "tricounts": ## returns counts based on trinucleotide context
