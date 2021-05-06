@@ -75,8 +75,8 @@ def parse_args(program_version, arguments=sys.argv[1:]):
     parser_head.add_argument(
         "-o",
         "--output",
-        type=str,
         required=True,
+        type=argparse.FileType("w"),
         help="FILE to return list of zmws",
     )
 
