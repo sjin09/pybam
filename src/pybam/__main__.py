@@ -8,21 +8,19 @@ import os
 import sys
 import logging
 from pybam.fastq import bam2fastq
+from pybam.zmwstat import zmwstat
 from pybam.zmwlist import zmwlist
 from pybam.parse_args import parse_args
 
 def main():
     parser, options = parse_args(program_version=__version__)
 
-    if options.sub == "bam2fastq":  # return first n lines of sequences
+    if options.sub == "bam2fastq":  # convert BAM file to FASTQ file
         bam2fastq(options.input, options.output)
-    elif options.sub == "zmwlist":  # return first n lines of sequences
+    elif options.sub == "zmwlist":  # parse BAM or FASTQ file and return a list of ZMW
         zmwlist(options.input, options.output)
-
-    # elif options.sub == "filter": ## return first n lines of sequences
-    #     hard_filter(options.input, options.number, options.output)
-    # elif options.sub == "tricounts": ## returns counts based on trinucleotide context
-    #     seq_statistics(options.input, options.ref, options.output)
+    elif options.sub == "zmwstat":  # generate ZMW statistisc from CCS and subreads BAM files
+        zmwlist(options.ccs, options.subreads, options.output)
     else:
         logging.warning("The subcommand does not exist!\n")
         parser.print_help()
