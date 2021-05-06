@@ -14,7 +14,7 @@ def ccs_stat(ccs):
         read = BAM(line)
         hq_base_count = read.bq_ascii.count("~")
         hq_base_fraction = "{:.2f}".format(hq_base_count/float(read.qlen))
-        ccs_hsh[read.zmw] = [hq_base_fraction, read.len]
+        ccs_hsh[read.zmw] = [hq_base_fraction, read.qlen]
     return ccs_hsh
 
 
