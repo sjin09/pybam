@@ -7,29 +7,15 @@ import numpy as np
 from pybam.bamClass import BAM
 
 
-def ccs_stat():
-    ccs_hash = {}
-    seqfile = open(infile) if infile.endswith((".fq", ".fastq")) else gzip.open(infile)
-    for i, j in enumerate(seqfile):
-        k = i % 4
-        if k == 0:  # header
-            seq_id = j.strip()
-            seq_id = seq_id if not isinstance(seq_id, bytes) else seq_id.decode("utf-8")
-            seq_id = seq_id.replace("@", "")
-            zmw = seq_id.split("/")[1]
-        elif k == 1:  # sequence
-            seq = j.strip()
-            seq = seq if not isinstance(seq, bytes) else seq.decode("utf-8")
-            seq_len = len(seq)
-        elif k == 2:
-            continue  # plus
-        elif k == 3:  # quality
-            bq_ascii = j.strip()
-            bq_ascii = bq_ascii if not isinstance(bq_ascii, bytes) else bq_ascii.decode("utf-8")
-            hq_base_count = bq_ascii.count("~")
-            hq_base_fraction = "{:.2f}".format(hq_base_count/float(seq_len))
-            ccs_hash[zmw] = [hq_base_fraction, seq_len]
-    return ccs_hash
+def ccs_stat(ccs):
+    ccs_hsh = {}
+    alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
+    for line in alignment_file:
+        read = BAM(line)
+        hq_base_count = read.bq_ascii.count("~")
+        hq_base_fraction = "{:.2f}".format(hq_base_count/float(qlen))
+        ccs_hsh[read.zmw] = [hq_base_fraction, read.len]
+    return ccs_hsh
 
 
 def subread_stat(subreads):
