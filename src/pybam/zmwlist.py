@@ -34,7 +34,6 @@ def fq2zmw(infile, outfile):
 
 
 def zmwlist(infile, outfile):
-    print(infile)
     if infile.endswith(".bam"):
         bam2zmw(infile, outfile)
     elif infile.endswith((".fq", ".fq.gz", ".fastq", ".fastq.gz")):
