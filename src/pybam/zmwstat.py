@@ -66,8 +66,6 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
         min_subread_length = min(subread_length_lst)
         median_subread_length = np.median(subread_length_lst)
         max_subread_length = max(subread_length_lst)
-        subread_length_lst = [str(_length) for _length in subread_length_lst]
-        subread_lengths = ",".join(subread_length_lst)
         lower_subread_threshold = 0.5 * median_subread_length
         upper_subread_threshold = 2 * median_subread_length
         normal_subread_hsh = {
@@ -88,11 +86,14 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
         normal_count = len(normal_subread_hsh)
         chimera_count = len(chimera_subread_hsh)
         fragmented_count = len(fragmented_subread_hsh)
+        subread_length_lst = [str(_length) for _length in subread_length_lst]
+        subread_lengths = ",".join(subread_length_lst)
 
+        ## return:  
         outstr = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
             zmw,
             ccs_bq_average,
-            ccs_hbq,
+            ccs_hbq_proprtion,
             ccs_length,
             subread_count,
             normal_count,
