@@ -51,6 +51,7 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
     # return: zmw statistics
     zmw_lst = natsort.natsorted(list(subread_hsh.keys()))
     for zmw in zmw_lst:
+        print(zmw)
         ccs_bq, ccs_length = ccs_hsh[zmw]
         subread_length_lst = subread_hsh[zmw]
         subread_count = len(subread_length_lst)
