@@ -12,8 +12,8 @@ class BAM:
         self.zmw = self.qname.split("/")[1]
         self.qseq = line.query_sequence
         self.qlen = len(line.query_sequence)
+        self.bq_int_lst = line.query_qualities
         self.bq_ascii = "".join([chr(_ + 33) for _ in line.query_qualities])
-        # self.bq_int_lst = line.query_qualities
         # self.qcoord = "{}:{}-{}".format(self.zmw, self.qstart, self.qend)
         # alignment
         # self.mapq = str(line.mapping_quality)

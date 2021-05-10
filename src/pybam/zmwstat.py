@@ -12,9 +12,11 @@ def ccs_stat(ccs):
     alignment_file = pysam.AlignmentFile(ccs, "rb", check_sq=False)
     for line in alignment_file:
         read = BAM(line)
-        hq_base_count = read.bq_ascii.count("~")
-        hq_base_fraction = "{:.2f}".format((hq_base_count * 100) / float(read.qlen))
-        ccs_hsh[read.zmw] = [hq_base_fraction, read.qlen]
+        bq_sum = sum(read.bq_int_lst)
+        bq_average = bq_sum/float(read.qlen)
+        hbq_count = read.bq_ascii.count("~")
+        hbq_proportion = "{:.2f}".format((hbq_count * 100) / float(read.qlen))
+        ccs_hsh[read.zmw] = [bq_average, hbq_proportion, read.qlen]
     return ccs_hsh
 
 
@@ -51,8 +53,14 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
     # return: zmw statistics
     zmw_lst = natsort.natsorted(list(subread_hsh.keys()))
     for zmw in zmw_lst:
-        print(zmw)
-        ccs_bq, ccs_length = ccs_hsh[zmw]
+        # ccs
+        ccs_length = "."
+        ccs_bq_average = "."
+        ccs_hbq_proprtion = "."
+        if zmw in ccs_hsh:
+            ccs_bq_average, ccs_hbq_proprtion, ccs_length = ccs_hsh[zmw]
+
+        # subreads
         subread_length_lst = subread_hsh[zmw]
         subread_count = len(subread_length_lst)
         min_subread_length = min(subread_length_lst)
@@ -80,22 +88,23 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
         chimera_count = len(chimera_subread_hsh)
         fragmented_count = len(fragmented_subread_hsh)
 
-        outstr = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
-            zmw,
-            ccs_bq,
-            ccs_length,
-            subread_count,
-            normal_count,
-            fragmented_count,
-            chimera_count,
-            min_subread_length,
-            median_subread_length,
-            max_subread_length,
-            lower_subread_threshold,
-            upper_subread_threshold,
-            subread_lengths,
-        )
-        outfile.write("{}".format(outstr))
+        # outstr = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
+        #     zmw,
+        #     ccs_bq_average,
+        #     ccs_hbq,
+        #     ccs_length,
+        #     subread_count,
+        #     normal_count,
+        #     fragmented_count,
+        #     chimera_count,
+        #     min_subread_length,
+        #     median_subread_length,
+        #     max_subread_length,
+        #     lower_subread_threshold,
+        #     upper_subread_threshold,
+        #     subread_lengths,
+        # )
+        # outfile.write("{}".format(outstr))
 
 
 def zmwstat(ccs, subreads, outfile):
