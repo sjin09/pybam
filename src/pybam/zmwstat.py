@@ -44,7 +44,7 @@ def subread_stat(subread):
 
 def return_stat(ccs_hsh, subread_hsh, outfile):
     # return: header
-    hstr = "ZMW Q93(%) CCS_LENGTH SUBREAD_COUNT NORMAL_COUNT FRAGMENT_COUNT CHIMIERA_COUNT \
+    hstr = "ZMW QV Q93(%) CCS_LENGTH NORMAL_COUNT FRAGMENT_COUNT CHIMIERA_COUNT SUBREAD_COUNT \
         MIN_SUBREAD_LENGTH MEDIAN_SUBREAD_LENGTH MAX_SUBREAD_LENGTH \
         LOWER_SUBREAD_THRESHOLD UPPER_SUBREAD_THRESHOLD SUBREAD_LENGTHS"
     hstr = "\t".join(hstr.split())
@@ -90,15 +90,15 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
         subread_lengths = ",".join(subread_length_lst)
 
         ## return:  
-        outstr = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
+        outstr = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
             zmw,
             ccs_bq_average,
             ccs_hbq_proprtion,
             ccs_length,
-            subread_count,
             normal_count,
             fragmented_count,
             chimera_count,
+            subread_count,
             min_subread_length,
             median_subread_length,
             max_subread_length,
