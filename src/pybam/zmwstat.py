@@ -60,16 +60,32 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
         subread_lengths = ",".join(subread_length_lst)
         lower_subread_threshold = 0.5 * median_subread_length
         upper_subread_threshold = 2 * median_subread_length
-        normal_count = len([_length for _length in subread_length_lst if _length > lower_subread_threshold and _length < upper_subread_threshold])
-        fragment_count = len([_length for _length in subread_length_lst if _length < lower_subread_threshold])
-        chimera_count = len([_length for _length in subread_length_lst if _length > upper_subread_threshold])
+        normal_subread_hsh = {
+            i: j
+            for i, j in enumerate(subread_length_lst)
+            if j > lower_subread_threshold and j < upper_subread_threshold
+        }
+        fragmented_subread_hsh = {
+            i: j
+            for i, j in enumerate(subread_length_lst)
+            if j < lower_subread_threshold
+        }
+        chimera_subread_hsh = {
+            i: j
+            for i, j in enumerate(subread_length_lst)
+            if j > upper_subread_threshold
+        }
+        normal_count = len(normal_subread_hsh)
+        chimera_count = len(chimera_subread_hsh)
+        fragmented_count = len(fragmented_subread_hsh)
+
         outstr = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
             zmw,
             ccs_bq,
             ccs_length,
             subread_count,
             normal_count,
-            fragment_count,
+            fragmented_count,
             chimera_count,
             min_subread_length,
             median_subread_length,
@@ -84,8 +100,9 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
 def zmwstat(ccs, subreads, outfile):
     if ccs.endswith(".bam") and subreads.endswith(".bam"):
         ccs_hsh = ccs_stat(ccs)
-        print(json.dumps(ccs_hsh, indent=4))
-        # subread_hsh = subread_stat(subreads)
+        # print(json.dumps(ccs_hsh, indent=4))
+        subread_hsh = subread_stat(subreads)
+        print(json.dumps(subread_hsh, indent=4))
         # return_stat(ccs_hsh, subread_hsh, outfile)
     else:
         logging.error("zmwstat doesn't support the provided input files")
