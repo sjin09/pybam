@@ -102,7 +102,7 @@ def zmwstat(ccs, subreads, outfile):
         ccs_hsh = ccs_stat(ccs)
         # print(json.dumps(ccs_hsh, indent=4))
         subread_hsh = subread_stat(subreads)
-        print(json.dumps(subread_hsh, indent=4))
-        # return_stat(ccs_hsh, subread_hsh, outfile)
+        # print(json.dumps(subread_hsh, indent=4))
+        return_stat(ccs_hsh, subread_hsh, outfile)
     else:
         logging.error("zmwstat doesn't support the provided input files")
