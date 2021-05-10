@@ -42,7 +42,7 @@ def subread_stat(subread):
     return subread_hsh
 
 
-def return_stat(ccs_hsh, subread_hsh, outfile):
+def return_zmwstat(ccs_hsh, subread_hsh, outfile):
     # return: header
     hstr = "ZMW QV Q93(%) CCS_LENGTH NORMAL_COUNT FRAGMENT_COUNT CHIMIERA_COUNT SUBREAD_COUNT \
         MIN_SUBREAD_LENGTH MEDIAN_SUBREAD_LENGTH MAX_SUBREAD_LENGTH \
@@ -112,9 +112,7 @@ def return_stat(ccs_hsh, subread_hsh, outfile):
 def zmwstat(ccs, subreads, outfile):
     if ccs.endswith(".bam") and subreads.endswith(".bam"):
         ccs_hsh = ccs_stat(ccs)
-        # print(json.dumps(ccs_hsh, indent=4))
         subread_hsh = subread_stat(subreads)
-        # print(json.dumps(subread_hsh, indent=4))
-        return_stat(ccs_hsh, subread_hsh, outfile)
+        return_zmwstat(ccs_hsh, subread_hsh, outfile)
     else:
         logging.error("zmwstat doesn't support the provided input files")
