@@ -51,7 +51,7 @@ def fq_stat(fqfile):
 def ccs_stat(ccs):
     if ccs.endswith(".bam"):
         ccs_hsh = bam_stat(ccs)
-    elif ccs.ensdwith((".fq", ".fq.gz", ".fastq", ".fastq.gz")):
+    elif ccs.endswith((".fq", ".fq.gz", ".fastq", ".fastq.gz")):
         ccs_hsh = fq_stat(ccs)
     return ccs_hsh
 
