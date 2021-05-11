@@ -1,5 +1,6 @@
 import sys
 import json
+import gzip
 import pysam
 import logging
 import natsort
@@ -7,16 +8,51 @@ import numpy as np
 from pybam.bamClass import BAM
 
 
-def ccs_stat(ccs):
+def bam_stat(bamfile):
     ccs_hsh = {}
-    alignment_file = pysam.AlignmentFile(ccs, "rb", check_sq=False)
+    alignment_file = pysam.AlignmentFile(bamfile, "rb", check_sq=False)
     for line in alignment_file:
         read = BAM(line)
         bq_sum = sum(read.bq_int_lst)
-        bq_average = bq_sum/float(read.qlen)
-        hbq_count = read.bq_ascii.count("~")
-        hbq_proportion = "{:.2f}".format((hbq_count * 100) / float(read.qlen))
-        ccs_hsh[read.zmw] = [bq_average, hbq_proportion, read.qlen]
+        qv = bq_sum / float(read.qlen)
+        hq_count = read.bq_ascii.count("~")
+        hq_proportion = "{:.2f}".format((hq_count * 100) / float(read.qlen))
+        ccs_hsh[read.zmw] = [qv, hq_proportion, read.qlen]
+
+
+def fq_stat(fqfile):
+    ccs_hsh = {}
+    seqfile = open(fqfile) if fqfile.endswith((".fq", ".fastq")) else gzip.open(fqfile)
+    for i, j in enumerate(seqfile):
+        k = i % 4
+        if k == 0:  # header
+            seq_id = j.strip()
+            seq_id = str(seq_id) if not isinstance(seq_id, bytes) else seq_id.decode("utf-8") 
+            seq_id = seq_id.replace("@", "")
+            zmw = seq_id.split("/")[1]
+        elif k == 1: # sequence
+            seq = j.strip()
+            seq = str(seq) if not isinstance(seq, bytes) else seq.decode("utf-8") 
+            seq_len = len(seq)
+        elif k == 2:
+            continue  # plus
+        elif k == 3:  # quality
+            seq_bq = j.strip()
+            seq_bq = str(seq_bq) if not isinstance(seq_bq, bytes) else seq_bq.decode("utf-8") 
+            seq_bq_lst = [ord(_bq) - 33 for _bq in list(seq_bq)]
+            bq_sum = sum(seq_bq_lst)
+            qv = bq_sum/float(seq_len)
+            hq_count = seq_bq.count("~")
+            hq_proportion = "{:.2f}".format((hq_count * 100)/float(seq_len)) 
+            ccs_hsh[zmw] = [qv, hq_proportion, seq_len]
+    return ccs_hsh
+
+
+def ccs_stat(ccs):
+    if ccs.endswith(".bam"):
+        ccs_hsh = bam_stat(ccs)
+    elif ccs.ensdwith((".fq", ".fq.gz", ".fastq", ".fastq.gz")):
+        ccs_hsh = fq_stat(ccs)
     return ccs_hsh
 
 
@@ -54,12 +90,11 @@ def return_zmwstat(ccs_hsh, subread_hsh, outfile):
     zmw_lst = natsort.natsorted(list(subread_hsh.keys()))
     for zmw in zmw_lst:
         # ccs
+        ccs_qv = "."
         ccs_length = "."
-        ccs_bq_average = "."
-        ccs_hbq_proprtion = "."
+        ccs_hq_proportion = "."
         if zmw in ccs_hsh:
-            ccs_bq_average, ccs_hbq_proprtion, ccs_length = ccs_hsh[zmw]
-
+            ccs_qv, ccs_hq_proportion, ccs_length = ccs_hsh[zmw]
         # subreads
         subread_length_lst = subread_hsh[zmw]
         subread_count = len(subread_length_lst)
@@ -89,11 +124,11 @@ def return_zmwstat(ccs_hsh, subread_hsh, outfile):
         subread_length_lst = [str(_length) for _length in subread_length_lst]
         subread_lengths = ",".join(subread_length_lst)
 
-        ## return:  
+        ## return:
         outstr = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n".format(
             zmw,
-            ccs_bq_average,
-            ccs_hbq_proprtion,
+            ccs_qv,
+            ccs_hq_proportion,
             ccs_length,
             normal_count,
             fragmented_count,
@@ -114,5 +149,12 @@ def zmwstat(ccs, subreads, outfile):
         ccs_hsh = ccs_stat(ccs)
         subread_hsh = subread_stat(subreads)
         return_zmwstat(ccs_hsh, subread_hsh, outfile)
+    elif ccs.endswith((".fq", ".fq.gz", ".fastq", ".fastq.gz")) and subreads.endswith(
+        ".bam"
+    ):
+        ccs_hsh = ccs_stat(ccs)
+        subread_hsh = subread_stat(subreads)
+        return_zmwstat(ccs_hsh, subread_hsh, outfile)
+
     else:
         logging.error("zmwstat doesn't support the provided input files")
