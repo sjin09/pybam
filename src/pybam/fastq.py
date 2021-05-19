@@ -32,10 +32,10 @@ def return_fastq(infile, blacklist, outfile):
 
     if state: # blacklist is present
         counter = 0 
-        zmw_blacklist = set(zmw_blacklist)
-        zmw_indexed = read_indexed_bamfile(infile)
-        zmw_whitelist = load_whitelist(infile, zmw_blacklist)
         alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
+        zmw_indexed = read_indexed_bamfile(alignment_file)
+        zmw_blacklist = set(zmw_blacklist)
+        zmw_whitelist = load_whitelist(infile, zmw_blacklist)
         for zmw in zmw_whitelist:
             try:
                 zmw_indexed.find(zmw)
