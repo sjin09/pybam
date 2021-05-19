@@ -25,11 +25,11 @@ def read_indexed_bamfile(infile):
 
 
 def return_fastq(infile, blacklist, outfile):
+    state = 0 
     if os.path.exists(blacklist):
         zmw_blacklist = load_blacklist(blacklist)
         state = 0 if len(zmw_blacklist) == 0 else 1
-    else:
-        state = 0
+        print(state)
     print(blacklist, state)
     if state:
         fqfile = open(outfile, "w")
