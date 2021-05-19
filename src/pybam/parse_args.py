@@ -18,7 +18,6 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         action="version",
         version="%(prog)s {version}".format(version=program_version),
     )
-
     # subcommands: bam2fastq
     subparsers = parser.add_subparsers(dest="sub")
     parser_head = subparsers.add_parser(
@@ -35,12 +34,11 @@ def parse_args(program_version, arguments=sys.argv[1:]):
     parser_head.add_argument(
         "-o",
         "--output",
-        type=str,
         required=True,
+        type=argparse.FileType("w"),
         help=".fq, .fq.gz, .fastq or .fastq.gz file",
     )
     # subcommands: bam2fasta
-    subparsers = parser.add_subparsers(dest="sub")
     parser_head = subparsers.add_parser(
         "bam2fasta",
         help="converts BAM file to FASTA file",
@@ -55,8 +53,8 @@ def parse_args(program_version, arguments=sys.argv[1:]):
     parser_head.add_argument(
         "-o",
         "--output",
-        type=str,
         required=True,
+        type=argparse.FileType("w"),
         help=".fa, .f.gz, .fasta or .fasta.gz file",
     )
     # subcommands: zmwstat
