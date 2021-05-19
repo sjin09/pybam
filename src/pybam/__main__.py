@@ -7,6 +7,7 @@ __author__ = "Sangjin Lee"
 import os
 import sys
 import logging
+from pybam.fasta import bam2fasta
 from pybam.fastq import bam2fastq
 from pybam.zmwstat import zmwstat
 from pybam.zmwlist import zmwlist
@@ -17,7 +18,8 @@ def main():
 
     if options.sub == "bam2fastq":  # convert BAM file to FASTQ file
         bam2fastq(options.input, options.output)
-        # bam2fastq(options.input, options.blacklist, options.output)
+    elif options.sub == "bam2fasta":  # convert BAM file to FASTQ file
+        bam2fasta(options.input, options.output)
     elif options.sub == "zmwlist":  # parse BAM or FASTQ file and return a list of ZMW
         zmwlist(options.input, options.output)
     elif options.sub == "zmwstat":  # generate ZMW statistisc from CCS and subreads BAM files

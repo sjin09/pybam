@@ -32,12 +32,6 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         required=True,
         help="SAM/BAM file",
     )
-    # parser_head.add_argument(
-    #     "--blacklist",
-    #     type=str,
-    #     required=False,
-    #     help="ZMW blacklist",
-    # )
     parser_head.add_argument(
         "-o",
         "--output",
@@ -45,7 +39,26 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         required=True,
         help=".fq, .fq.gz, .fastq or .fastq.gz file",
     )
-
+    # subcommands: bam2fasta
+    subparsers = parser.add_subparsers(dest="sub")
+    parser_head = subparsers.add_parser(
+        "bam2fasta",
+        help="converts BAM file to FASTA file",
+    )
+    parser_head.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        required=True,
+        help="SAM/BAM file",
+    )
+    parser_head.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        required=True,
+        help=".fa, .f.gz, .fasta or .fasta.gz file",
+    )
     # subcommands: zmwstat
     parser_head = subparsers.add_parser(
         "zmwstat",
