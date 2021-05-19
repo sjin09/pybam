@@ -30,7 +30,7 @@ def return_fastq(infile, blacklist, outfile):
         state = 0 if len(zmw_blacklist) == 0 else 1
     else:
         state = 0
-
+    print(blacklist, state)
     if state:
         fqfile = open(outfile, "w")
         alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
