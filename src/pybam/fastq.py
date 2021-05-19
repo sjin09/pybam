@@ -25,19 +25,12 @@ def read_indexed_bamfile(infile):
 
 
 def return_fastq(infile, blacklist, outfile):
-    state = 0 
+    state = False
     if os.path.exists(blacklist):
         zmw_blacklist = load_blacklist(blacklist)
-        state = 0 if len(zmw_blacklist) == 0 else 1
-        print(state)
-    print(blacklist, state)
-    if state:
-        fqfile = open(outfile, "w")
-        alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
-        for line in alignment_file:
-            read = BAM(line)
-            fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
-    else:
+        state = False if len(zmw_blacklist) == 0 else True
+
+    if state: # blacklist is present
         counter = 0 
         zmw_blacklist = set(zmw_blacklist)
         zmw_indexed = read_indexed_bamfile(infile)
@@ -55,6 +48,12 @@ def return_fastq(infile, blacklist, outfile):
             counter += 1
             if counter == 10:
                 break
+    else:
+        fqfile = open(outfile, "w")
+        alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
+        for line in alignment_file:
+            read = BAM(line)
+            fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
 
 def return_gzip_fastq(infile, blacklist, outfile):
     fqfile = gzip.open(outfile, "wb")
