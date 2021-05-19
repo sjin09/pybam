@@ -38,6 +38,7 @@ def return_fastq(infile, blacklist, outfile):
             read = BAM(line)
             fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
     else:
+        counter = 0 
         zmw_blacklist = set(zmw_blacklist)
         zmw_indexed = read_indexed_bamfile(infile)
         zmw_whitelist = load_whitelist(infile, zmw_blacklist)
@@ -51,7 +52,9 @@ def return_fastq(infile, blacklist, outfile):
                 iterator = zmw_indexed.find(zmw)
                 for x in iterator:
                     print(x)
-
+            counter += 1
+            if counter == 10:
+                break
 
 def return_gzip_fastq(infile, blacklist, outfile):
     fqfile = gzip.open(outfile, "wb")
