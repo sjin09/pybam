@@ -32,12 +32,12 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         required=True,
         help="SAM/BAM file",
     )
-    parser_head.add_argument(
-        "--blacklist",
-        type=str,
-        required=False,
-        help="ZMW blacklist",
-    )
+    # parser_head.add_argument(
+    #     "--blacklist",
+    #     type=str,
+    #     required=False,
+    #     help="ZMW blacklist",
+    # )
     parser_head.add_argument(
         "-o",
         "--output",

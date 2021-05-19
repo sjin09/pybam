@@ -24,42 +24,42 @@ def read_indexed_bamfile(infile):
     return read_indexed
 
 
-def return_fastq(infile, blacklist, outfile):
-    state = False
-    if os.path.exists(blacklist):
-        zmw_blacklist = load_blacklist(blacklist)
-        state = False if len(zmw_blacklist) == 0 else True
+def return_fastq(infile, outfile):
+    # state = False
+    # if os.path.exists(blacklist):
+    #     zmw_blacklist = load_blacklist(blacklist)
+    #     state = False if len(zmw_blacklist) == 0 else True
 
-    if state: # blacklist is present
-        counter = 0 
-        alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
-        zmw_indexed = read_indexed_bamfile(alignment_file)
-        zmw_blacklist = set(zmw_blacklist)
-        zmw_whitelist = load_whitelist(infile, zmw_blacklist)
-        for zmw in zmw_whitelist:
-            ## try:
-            ##     zmw_indexed.find(zmw)
-            ## except KeyError:
-            ##     pass
-            ## else:
-            ##     iterator = zmw_indexed.find(zmw)
-            ##     for x in iterator:
-            ##         print(x)
-            line = zmw_indexed.find(zmw)
-            read = BAM(line)
-            print("@{}\n{}\n+\n{}".format(read.qname, read.qseq, read.bq_ascii))
-            ## fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
-            counter += 1
-            if counter == 10:
-                break
-    else:
-        fqfile = open(outfile, "w")
-        alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
-        for line in alignment_file:
-            read = BAM(line)
-            fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
+    # if state: # blacklist is present
+    #     counter = 0 
+    #     alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
+    #     zmw_indexed = read_indexed_bamfile(alignment_file)
+    #     zmw_blacklist = set(zmw_blacklist)
+    #     zmw_whitelist = load_whitelist(infile, zmw_blacklist)
+    #     for zmw in zmw_whitelist:
+    #         ## try:
+    #         ##     zmw_indexed.find(zmw)
+    #         ## except KeyError:
+    #         ##     pass
+    #         ## else:
+    #         ##     iterator = zmw_indexed.find(zmw)
+    #         ##     for x in iterator:
+    #         ##         print(x)
+    #         line = zmw_indexed.find(zmw)
+    #         read = BAM(line)
+    #         print("@{}\n{}\n+\n{}".format(read.qname, read.qseq, read.bq_ascii))
+    #         ## fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
+    #         counter += 1
+    #         if counter == 10:
+    #             break
+    # else:
+    fqfile = open(outfile, "w")
+    alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
+    for line in alignment_file:
+        read = BAM(line)
+        fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
 
-def return_gzip_fastq(infile, blacklist, outfile):
+def return_gzip_fastq(infile, outfile):
     fqfile = gzip.open(outfile, "wb")
     alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
     for line in alignment_file:
@@ -74,12 +74,12 @@ def return_gzip_fastq(infile, blacklist, outfile):
 
 ## def return_whitelist_gzip_fastq(infile, blacklist, outfile):
 
-def bam2fastq(infile, blacklist, outfile):
+def bam2fastq(infile, outfile):
     if infile.endswith((".sam", ".bam")):
         if outfile.endswith((".fq", ".fastq")):
-            return_fastq(infile, blacklist, outfile)
+            return_fastq(infile, outfile)
         elif outfile.endswith((".fq.gz", ".fastq.gz")):
-            return_gzip_fastq(infile, blacklist, outfile)
+            return_gzip_fastq(infile, outfile)
         else:
             logging.error("bam2fastq does not support the provided OUTPUT file format")
     else:
