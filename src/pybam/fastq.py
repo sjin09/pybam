@@ -37,14 +37,18 @@ def return_fastq(infile, blacklist, outfile):
         zmw_blacklist = set(zmw_blacklist)
         zmw_whitelist = load_whitelist(infile, zmw_blacklist)
         for zmw in zmw_whitelist:
-            try:
-                zmw_indexed.find(zmw)
-            except KeyError:
-                pass
-            else:
-                iterator = zmw_indexed.find(zmw)
-                for x in iterator:
-                    print(x)
+            ## try:
+            ##     zmw_indexed.find(zmw)
+            ## except KeyError:
+            ##     pass
+            ## else:
+            ##     iterator = zmw_indexed.find(zmw)
+            ##     for x in iterator:
+            ##         print(x)
+            line = zmw_indexed.find(zmw)
+            read = BAM(line)
+            print("@{}\n{}\n+\n{}".format(read.qname, read.qseq, read.bq_ascii))
+            ## fqfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
             counter += 1
             if counter == 10:
                 break
