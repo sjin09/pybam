@@ -6,11 +6,10 @@ from pybam.bamClass import BAM
 
 
 def return_fasta(infile, outfile):
-    fafile = open(outfile, "w")
     alignment_file = pysam.AlignmentFile(infile, "rb", check_sq=False)
     for line in alignment_file:
         read = BAM(line)
-        fafile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
+        outfile.write("@{}\n{}\n+\n{}\n".format(read.qname, read.qseq, read.bq_ascii))
 
 # def return_gzip_fasta(infile, outfile):
 #     fafile = gzip.open(outfile, "wb")
