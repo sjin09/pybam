@@ -16,7 +16,7 @@ def main():
     parser, options = parse_args(program_version=__version__)
 
     if options.sub == "bam2fastq":  # convert BAM file to FASTQ file
-        bam2fastq(options.input, options.output)
+        bam2fastq(options.input, options.blacklist, options.output)
     elif options.sub == "zmwlist":  # parse BAM or FASTQ file and return a list of ZMW
         zmwlist(options.input, options.output)
     elif options.sub == "zmwstat":  # generate ZMW statistisc from CCS and subreads BAM files

@@ -33,6 +33,12 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         help="SAM/BAM file",
     )
     parser_head.add_argument(
+        "--blacklist",
+        type=str,
+        required=False,
+        help="ZMW blacklist",
+    )
+    parser_head.add_argument(
         "-o",
         "--output",
         type=str,
@@ -49,7 +55,7 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         "--ccs",
         type=str,
         required=True,
-        help="PacBio circular consensus sequence (CCS) SAM/BAM file",
+        help="PacBio circular consensus sequence (CCS) SAM/BAM or FASTQ (.fq, .fq.gz, fastq, fastq.gz) file",
     )
     parser_head.add_argument(
         "--subreads",
