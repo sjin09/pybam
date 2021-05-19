@@ -18,45 +18,8 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         action="version",
         version="%(prog)s {version}".format(version=program_version),
     )
-    # subcommands: bam2fastq
+    # init subcommand
     subparsers = parser.add_subparsers(dest="sub")
-    parser_head = subparsers.add_parser(
-        "bam2fastq",
-        help="converts BAM files to FASTQ files",
-    )
-    parser_head.add_argument(
-        "-i",
-        "--input",
-        type=str,
-        required=True,
-        help="SAM/BAM file",
-    )
-    parser_head.add_argument(
-        "-o",
-        "--output",
-        required=True,
-        type=argparse.FileType("w"),
-        help=".fq, .fq.gz, .fastq or .fastq.gz file",
-    )
-    # subcommands: bam2fasta
-    parser_head = subparsers.add_parser(
-        "bam2fasta",
-        help="converts BAM file to FASTA file",
-    )
-    parser_head.add_argument(
-        "-i",
-        "--input",
-        type=str,
-        required=True,
-        help="SAM/BAM file",
-    )
-    parser_head.add_argument(
-        "-o",
-        "--output",
-        required=True,
-        type=argparse.FileType("w"),
-        help=".fa, .f.gz, .fasta or .fasta.gz file",
-    )
     # subcommands: zmwstat
     parser_head = subparsers.add_parser(
         "zmwstat",
@@ -81,7 +44,6 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         type=argparse.FileType("w"),
         help="FILE to return the ZMW sequence statistics",
     )
-
     # subcommands: zmwlist
     parser_head = subparsers.add_parser(
         "zmwlist",
@@ -101,8 +63,44 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         type=argparse.FileType("w"),
         help="FILE to return list of zmws",
     )
-
-
+    # subcommands: bam2fasta
+    parser_head = subparsers.add_parser(
+        "bam2fasta",
+        help="converts BAM file to FASTA file",
+    )
+    parser_head.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        required=True,
+        help="SAM/BAM file",
+    )
+    parser_head.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        type=argparse.FileType("w"),
+        help=".fa, .f.gz, .fasta or .fasta.gz file",
+    )
+    # subcommands: bam2fastq
+    parser_head = subparsers.add_parser(
+        "bam2fastq",
+        help="converts BAM files to FASTQ files",
+    )
+    parser_head.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        required=True,
+        help="SAM/BAM file",
+    )
+    parser_head.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        type=argparse.FileType("w"),
+        help=".fq, .fq.gz, .fastq or .fastq.gz file",
+    )
     if len(arguments) == 0: # option length
         parser.print_help()
         parser.exit()
