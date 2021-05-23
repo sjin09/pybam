@@ -2,7 +2,7 @@ import os
 import gzip
 import pysam
 import logging
-from pybam.bamClass import BAM
+from pybam.bamlib import BAM
 from pybam.util import chunkstring
 
 
@@ -11,7 +11,7 @@ def return_fasta(infile, outfile):
     for line in alignment_file:
         read = BAM(line)
         outfile.write(">{}\n".format(read.qname))
-        for chunk in chunkstring(read.seq):
+        for chunk in chunkstring(read.qseq):
             outfile.write("{}\n".format(chunk))
 
 
