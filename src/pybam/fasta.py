@@ -2,8 +2,8 @@ import os
 import gzip
 import pysam
 import logging
-from fastx.bamClass import BAM
-from fastx.util import chunkstring
+from pybam.bamClass import BAM
+from pybam.util import chunkstring
 
 
 def return_fasta(infile, outfile):
