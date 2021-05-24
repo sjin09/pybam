@@ -80,7 +80,7 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         "--output",
         required=True,
         type=argparse.FileType("w"),
-        help=".fa, .f.gz, .fasta or .fasta.gz file",
+        help=".fa or .fasta file",
     )
     # subcommands: bam2fastq
     parser_head = subparsers.add_parser(
@@ -99,7 +99,7 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         "--output",
         required=True,
         type=argparse.FileType("w"),
-        help=".fq, .fq.gz, .fastq or .fastq.gz file",
+        help=".fq, or .fastq file",
     )
     if len(arguments) == 0: # option length
         parser.print_help()

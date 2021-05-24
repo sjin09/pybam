@@ -16,14 +16,14 @@ from pybam.parse_args import parse_args
 def main():
     parser, options = parse_args(program_version=__version__)
 
-    if options.sub == "bam2fastq":  # convert BAM file to FASTQ file
-        bam2fastq(options.input, options.output)
-    elif options.sub == "bam2fasta":  # convert BAM file to FASTQ file
-        bam2fasta(options.input, options.output)
-    elif options.sub == "zmwlist":  # parse BAM or FASTQ file and return a list of ZMW
+    if options.sub == "zmwlist":  # parse BAM or FASTQ file and return a list of ZMW
         zmwlist(options.input, options.output)
     elif options.sub == "zmwstat":  # generate ZMW statistisc from CCS and subreads BAM files
         zmwstat(options.ccs, options.subreads, options.output)
+    elif options.sub == "bam2fastq":  # convert BAM file to FASTQ file
+        bam2fastq(options.input, options.output)
+    elif options.sub == "bam2fasta":  # convert BAM file to FASTQ file
+        bam2fasta(options.input, options.output)
     else:
         logging.warning("The subcommand does not exist!\n")
         parser.print_help()
