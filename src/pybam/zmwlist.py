@@ -1,7 +1,7 @@
 import gzip
 import pysam
 import logging
-from pybam.bamClass import BAM
+from pybam.bamlib import BAM
 
 
 def bam2zmw(infile, outfile):

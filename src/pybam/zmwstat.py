@@ -5,7 +5,7 @@ import pysam
 import logging
 import natsort
 import numpy as np
-from pybam.bamClass import BAM
+from pybam.bamlib import BAM
 
 
 def bam_stat(bamfile):
