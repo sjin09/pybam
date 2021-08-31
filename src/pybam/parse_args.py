@@ -63,7 +63,7 @@ def parse_args(program_version, arguments=sys.argv[1:]):
         type=argparse.FileType("w"),
         help="FILE to return list of zmws",
     )
-    # subcommands: zmwlist
+    # subcommands: zmw2fasta
     parser_head = subparsers.add_parser(
         "zmw2fasta",
         help="returns FASTA file per ZMW",
